@@ -1,7 +1,9 @@
 #include <iostream>
+#include <iomanip>
 #include <valarray>
 #include "CMyVektor.h"
 #include "CMyMatrix.h"
+#include "C_DGLSolver.h"
 
 using namespace std;
 
@@ -41,6 +43,47 @@ CMyVektor funktion4(CMyVektor x) {
     result[0] = x[0] * x[0] * x[0] * x[1] * x[1] * x[1] - 2 * x[1];
     result[1] = x[0] - 2;
     return result;
+}
+
+// Funktion für das DGL-System
+CMyVektor dglSystem(CMyVektor y, double x) {
+    CMyVektor dydx(2);
+    dydx[0] = 2 * y[1] - x * y[0];
+    dydx[1] = y[0] * y[1] - 2 * x * x * x;
+    return dydx;
+}
+
+// Funktion für die DGL dritter Ordnung
+double dglDritterOrdnung(CMyVektor y, double x) {
+    return 2 * x * y[2] + 2 * y[0] * y[1];
+}
+
+// Exakte Lösung der DGL dritter Ordnung
+double exaktLoesung(double x) {
+    return 1. / x;
+}
+
+void berechneAbweichung(double xStart, double xEnd, int steps, CMyVektor yStart, double (*exaktLoesung)(double),
+                        C_DGLSolver &solver, const std::string &method) {
+    double h = (xEnd - xStart) / steps;
+    double x = xStart;
+    CMyVektor y = yStart;
+
+    for (int i = 0; i < steps; ++i) {
+        if (method == "Euler") {
+            y = solver.euler(y, x, h);
+        } else if (method == "Heun") {
+            y = solver.heun(y, x, h);
+        }
+        x += h;
+    }
+
+    double y_numerisch = y[0];
+    double y_exakt = exaktLoesung(x);
+    double abweichung = y_numerisch - y_exakt;
+
+    std::cout << "Abweichung bei " << method << " bei " << steps << " Schritten: " << abweichung
+              << std::endl;
 }
 
 int main() {
@@ -104,6 +147,7 @@ int main() {
     }
     */
 
+    /*
     // Startwert
     CMyVektor start(2);
     start[0] = 1.0;
@@ -111,6 +155,47 @@ int main() {
 
     // Newton-Verfahren
     CMyVektor nullstelle = newton(start, funktion4);
+    */
+
+    ///Praktikum 3
+    // Test des DGL-Systems
+    CMyVektor yStartSystem(2);
+    yStartSystem[0] = 0; // y1(0) = 0
+    yStartSystem[1] = 1; // y2(0) = 1
+    C_DGLSolver solverSystem(dglSystem);
+
+    //std::cout << "\nTest des DGL-Systems mit Euler-Verfahren:" << std::endl;
+    //solverSystem.solveEuler(0, 2, 100, yStartSystem);
+
+    //std::cout << "\nTest des DGL-Systems mit Heun-Verfahren:" << std::endl;
+    //solverSystem.solveHeun(0, 2, 100, yStartSystem);
+
+
+    // Test der DGL dritter Ordnung
+    CMyVektor yStartDritterOrdnung(3);
+    yStartDritterOrdnung[0] = 1; // y(1)
+    yStartDritterOrdnung[1] = -1; // y'(1)
+    yStartDritterOrdnung[2] = 2; // y''(1)
+    C_DGLSolver solverDritterOrdnung(dglDritterOrdnung);
+
+    //std::cout << "\nTest der DGL dritter Ordnung mit Euler-Verfahren:" << std::endl;
+    //solverDritterOrdnung.solveEuler(1, 2, 100, yStartDritterOrdnung);
+
+    //std::cout << "\nTest der DGL dritter Ordnung mit Heun-Verfahren:" << std::endl;
+    //solverDritterOrdnung.solveHeun(1, 2, 100, yStartDritterOrdnung);
+
+    // Abweichungen
+    berechneAbweichung(1, 2, 10, yStartDritterOrdnung, exaktLoesung, solverDritterOrdnung, "Euler");
+    berechneAbweichung(1, 2, 10, yStartDritterOrdnung, exaktLoesung, solverDritterOrdnung, "Heun");
+
+    berechneAbweichung(1, 2, 100, yStartDritterOrdnung, exaktLoesung, solverDritterOrdnung, "Euler");
+    berechneAbweichung(1, 2, 100, yStartDritterOrdnung, exaktLoesung, solverDritterOrdnung, "Heun");
+
+    berechneAbweichung(1, 2, 1000, yStartDritterOrdnung, exaktLoesung, solverDritterOrdnung, "Euler");
+    berechneAbweichung(1, 2, 1000, yStartDritterOrdnung, exaktLoesung, solverDritterOrdnung, "Heun");
+
+    berechneAbweichung(1, 2, 10000, yStartDritterOrdnung, exaktLoesung, solverDritterOrdnung, "Euler");
+    berechneAbweichung(1, 2, 10000, yStartDritterOrdnung, exaktLoesung, solverDritterOrdnung, "Heun");
 
     return 0;
 }
