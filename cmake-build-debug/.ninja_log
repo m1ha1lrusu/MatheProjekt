@@ -1,0 +1,9 @@
+# ninja log v6
+14	1703	7392269677870196	CMakeFiles/MatheProjekt.dir/CMyVektor.cpp.obj	2aa69557bf29d72f
+21	1707	7392269677941938	CMakeFiles/MatheProjekt.dir/CMyMatrix.cpp.obj	8c1c21dc2baaba0c
+4	1725	7392269677779830	CMakeFiles/MatheProjekt.dir/main.cpp.obj	cf0e1fd63028ecbf
+1725	2064	7392269694982158	MatheProjekt.exe	d757de2b25ceba35
+18	1378	7392270422535622	CMakeFiles/MatheProjekt.dir/CMyMatrix.cpp.obj	8c1c21dc2baaba0c
+1379	1546	7392270436144835	MatheProjekt.exe	d757de2b25ceba35
+12	1283	7392270542718649	CMakeFiles/MatheProjekt.dir/CMyMatrix.cpp.obj	8c1c21dc2baaba0c
+1284	1450	7392270555426329	MatheProjekt.exe	d757de2b25ceba35
