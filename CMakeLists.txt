@@ -7,4 +7,6 @@ add_executable(MatheProjekt main.cpp
         CMyVektor.cpp
         CMyVektor.h
         CMyMatrix.cpp
-        CMyMatrix.h)
+        CMyMatrix.h
+        C_DGLSolver.cpp
+        C_DGLSolver.h)
