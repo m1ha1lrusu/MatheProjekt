@@ -1,0 +1,10 @@
+#ifndef MATHEPROJEKT_C_DGLSOLVER_H
+#define MATHEPROJEKT_C_DGLSOLVER_H
+
+
+class C_DGLSolver {
+
+};
+
+
+#endif //MATHEPROJEKT_C_DGLSOLVER_H
