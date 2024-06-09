@@ -58,6 +58,10 @@ double dglDritterOrdnung(CMyVektor y, double x) {
     return 2 * x * y[2] + 2 * y[0] * y[1];
 }
 
+double dglDritterOrdnung2(CMyVektor y, double x) {
+    return 2 * x * y[1] * y[2] + 2 * y[0] * y[0] * y[1];
+}
+
 // Exakte Lösung der DGL dritter Ordnung
 double exaktLoesung(double x) {
     return 1. / x;
@@ -110,7 +114,7 @@ int main() {
     */
 
     /// Praktikum 2
-    /*
+/*
     // Testen der Jacobi-Matrix
     CMyVektor x(4);
     x[0] = 1;
@@ -123,39 +127,39 @@ int main() {
 
     for (int i = 0; i < 3; ++i) {
         for (int j = 0; j < 4; ++j) {
-            cout << J.at(i, j) << "; ";
+            cout << J(i, j) << "; ";
         }
         cout << endl;
+
+
+        /*
+        // Testen der Jacobi-Matrix mit Funktion aus Praktikum-Test
+        CMyVektor x(3);
+        x[0] = 3.0;
+        x[1] = 1.0;
+        x[2] = 2.0;
+
+        CMyMatrix J = jacobi(x, funktion_mumie);
+        cout << "\nJacobi-Matrix J = " << endl;
+
+        for (int i = 0; i < 2; i++) {
+            cout << "\t";
+            for (int j = 0; j < 3; j++) {
+                cout << J.at(i, j) << "\t ";
+            }
+            cout << endl;
+        }
         */
 
-    /*
-    // Testen der Jacobi-Matrix mit Funktion aus Praktikum-Test
-    CMyVektor x(3);
-    x[0] = 3.0;
-    x[1] = 1.0;
-    x[2] = 2.0;
+/*
+        // Startwert
+        CMyVektor start(2);
+        start[0] = 1.0;
+        start[1] = 1.0;
 
-    CMyMatrix J = jacobi(x, funktion_mumie);
-    cout << "\nJacobi-Matrix J = " << endl;
-
-    for (int i = 0; i < 2; i++) {
-        cout << "\t";
-        for (int j = 0; j < 3; j++) {
-            cout << J.at(i, j) << "\t ";
-        }
-        cout << endl;
-    }
-    */
-
-    /*
-    // Startwert
-    CMyVektor start(2);
-    start[0] = 1.0;
-    start[1] = 1.0;
-
-    // Newton-Verfahren
-    CMyVektor nullstelle = newton(start, funktion4);
-    */
+        // Newton-Verfahren
+        CMyVektor nullstelle = newton(start, funktion4);
+*/
 
     ///Praktikum 3
     // Test des DGL-Systems
@@ -165,7 +169,8 @@ int main() {
     C_DGLSolver solverSystem(dglSystem);
 
     //std::cout << "\nTest des DGL-Systems mit Euler-Verfahren:" << std::endl;
-    //solverSystem.solveEuler(0, 2, 100, yStartSystem);
+    //CMyVektor result = solverSystem.solveEuler(1, 2, 100, yStartSystem);
+    //std::cout << result[0] - 0.5;
 
     //std::cout << "\nTest des DGL-Systems mit Heun-Verfahren:" << std::endl;
     //solverSystem.solveHeun(0, 2, 100, yStartSystem);
@@ -176,17 +181,21 @@ int main() {
     yStartDritterOrdnung[0] = 1; // y(1)
     yStartDritterOrdnung[1] = -1; // y'(1)
     yStartDritterOrdnung[2] = 2; // y''(1)
-    C_DGLSolver solverDritterOrdnung(dglDritterOrdnung);
+    C_DGLSolver solverDritterOrdnung(dglDritterOrdnung2);
 
-    //std::cout << "\nTest der DGL dritter Ordnung mit Euler-Verfahren:" << std::endl;
-    //solverDritterOrdnung.solveEuler(1, 2, 100, yStartDritterOrdnung);
+    std::cout << "\nTest der DGL dritter Ordnung mit Euler-Verfahren:" << std::endl;
+    CMyVektor result = solverDritterOrdnung.solveEuler(1, 2, 10000, yStartDritterOrdnung);
+    std::cout << result[0] - 0.5 << std::endl;
 
     //std::cout << "\nTest der DGL dritter Ordnung mit Heun-Verfahren:" << std::endl;
     //solverDritterOrdnung.solveHeun(1, 2, 100, yStartDritterOrdnung);
 
+
+    /*
     // Abweichungen
     berechneAbweichung(1, 2, 10, yStartDritterOrdnung, exaktLoesung, solverDritterOrdnung, "Euler");
     berechneAbweichung(1, 2, 10, yStartDritterOrdnung, exaktLoesung, solverDritterOrdnung, "Heun");
+
 
     berechneAbweichung(1, 2, 100, yStartDritterOrdnung, exaktLoesung, solverDritterOrdnung, "Euler");
     berechneAbweichung(1, 2, 100, yStartDritterOrdnung, exaktLoesung, solverDritterOrdnung, "Heun");
@@ -196,6 +205,6 @@ int main() {
 
     berechneAbweichung(1, 2, 10000, yStartDritterOrdnung, exaktLoesung, solverDritterOrdnung, "Euler");
     berechneAbweichung(1, 2, 10000, yStartDritterOrdnung, exaktLoesung, solverDritterOrdnung, "Heun");
-
+    */
     return 0;
 }

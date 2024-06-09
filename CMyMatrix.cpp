@@ -30,6 +30,8 @@ CMyMatrix CMyMatrix::invers() const {
         throw std::runtime_error("Determinatnte = 0. Matrix kann nicht inversiert werden.");
     }
 
+    // det überschreiben (mit 1./det), dann mit det multiplizieren.
+
     CMyMatrix inv(2, 2);
     inv(0, 0) = d / det;
     inv(0, 1) = -b / det;
@@ -66,15 +68,19 @@ CMyMatrix jacobi(CMyVektor x, CMyVektor (*funktion)(CMyVektor)) {
 
     CMyMatrix J(n, m); // Jacobi-Matrix
 
+    // besser xh1 und xh2 vor der for-Schleife deklarieren.
+
     for (int j = 0; j < m; ++j) {
+
         CMyVektor xh1 = x;
         xh1[j] += h;
-        CMyVektor fxh1 = funktion(xh1);
+        CMyVektor fxh1 = funktion(xh1); // Auswerten der Fkt. an xh1.
 
         CMyVektor xh2 = x;
         xh2[j] -= h;
         CMyVektor fxh2 = funktion(xh2);
 
+        // Berechnen des Differenzquotienten (Näherung der Ableitung)
         for (int i = 0; i < n; ++i) {
             J(i, j) = (fxh1[i] - fxh2[i]) / (2 * h);
         }
