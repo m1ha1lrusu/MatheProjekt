@@ -1,10 +1,8 @@
 #ifndef MATHEPROJEKT_CMYMATRIX_H
 #define MATHEPROJEKT_CMYMATRIX_H
 
-
 #include "CMyVektor.h"
 #include <vector>
-
 
 class CMyMatrix {
 private:

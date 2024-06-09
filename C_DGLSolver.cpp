@@ -13,6 +13,8 @@ CMyVektor C_DGLSolver::ableitungen(CMyVektor y, double x) {
         return f_DGL_System(y, x);
     } else {
         CMyVektor result(y.getDimension());
+
+        // Umwandeln (außer der letzten Komponente)
         for (int i = 0; i < y.getDimension() - 1; ++i) {
             result[i] = y[i + 1];
         }
@@ -34,7 +36,7 @@ CMyVektor C_DGLSolver::heun(CMyVektor y, double x, double h) {
 }
 
 // Methode zur Lösung der DGL mit dem Euler-Verfahren
-void C_DGLSolver::solveEuler(double xStart, double xEnd, int steps, CMyVektor yStart) {
+CMyVektor C_DGLSolver::solveEuler(double xStart, double xEnd, int steps, CMyVektor yStart) {
     double h = (xEnd - xStart) / steps;
     double x = xStart;
     CMyVektor y = yStart;
@@ -42,7 +44,7 @@ void C_DGLSolver::solveEuler(double xStart, double xEnd, int steps, CMyVektor yS
     std::cout << "Euler-Verfahren:" << std::endl;
     std::cout << "h = " << h << std::endl;
 
-    for (int i = 0; i <= steps; ++i) {
+    for (int i = 0; i < steps; ++i) {
         CMyVektor dydx = ableitungen(y, x);
 
         std::cout << "\nSchritt " << i << ":" << std::endl;
@@ -53,6 +55,7 @@ void C_DGLSolver::solveEuler(double xStart, double xEnd, int steps, CMyVektor yS
         y = euler(y, x, h);
         x += h;
     }
+    return y;
 }
 
 // Methode zur Lösung der DGL mit dem Heun-Verfahren

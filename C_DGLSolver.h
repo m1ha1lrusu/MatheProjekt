@@ -34,7 +34,7 @@ public:
     CMyVektor heun(CMyVektor y, double x, double h);
 
     // Methode zur Lösung der DGL mit dem Euler-Verfahren über mehrere Schritte
-    void solveEuler(double xStart, double xEnd, int steps, CMyVektor yStart);
+    CMyVektor solveEuler(double xStart, double xEnd, int steps, CMyVektor yStart);
 
     // Methode zur Lösung der DGL mit dem Heun-Verfahren über mehrere Schritte
     void solveHeun(double xStart, double xEnd, int steps, CMyVektor yStart);
